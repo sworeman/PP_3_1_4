@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="https://www.thymeleaf.org" xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Panel</title>
+</head>
+<body>
+<h1>Admin Panel</h1>
+
+<h2>Users</h2>
+<table>
+    <thead>
+    <tr>
+        <th>Username</th>
+        <th>Roles</th>
+        <th>Actions</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="user : ${users}">
+        <td th:text="${user.username}"></td>
+        <td th:each="role : ${user.roles}" th:text="${role.name}">Role</td>
+        <td>
+            <a th:href="@{/admin/edit/{id}(id=${user.id})}">Edit</a>
+            <form th:action="@{/admin/delete/{id}(id=${user.id})}" method="post" style="display:inline;">
+                <input type="submit" value="Delete">
+            </form>
+        </td>
+    </tr>
+    </tbody>
+</table>
+
+<h2>Add New User</h2>
+<form th:action="@{/admin/add}" method="post">
+    <label for="username">Username:</label>
+    <input type="text" id="username" th:field="*{newUser.username}" required>
+
+    <label for="password">Password:</label>
+    <input type="password" id="password" th:field="*{newUser.password}" required>
+
+    <label for="roles">Roles:</label>
+    <select id="roles" name="roles" multiple>
+        <option th:each="role : ${allRoles}" th:value="${role.id}" th:text="${role.name}"></option>
+    </select>
+
+    <input type="submit" value="Add User">
+</form>
+</body>
+</html>
