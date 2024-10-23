@@ -5,7 +5,6 @@ import org.springframework.context.annotation.Lazy;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -22,30 +21,34 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 @Service
-public class MyUserDetailService implements UserDetailsService {
+public class UserServiceImpl implements UserService {
+
     private final UserRepository userRepository;
     private final BCryptPasswordEncoder passwordEncoder;
 
     @Autowired
-    public MyUserDetailService(UserRepository userRepository, @Lazy BCryptPasswordEncoder passwordEncoder) {
+    public UserServiceImpl(UserRepository userRepository, @Lazy BCryptPasswordEncoder passwordEncoder) {
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
     }
 
+    @Override
     public List<User> findAll() {
         return userRepository.findAll();
     }
 
+    @Override
     public User findById(Long id) {
-        return userRepository.findById(id)
-                .orElseThrow(() -> new IllegalArgumentException("Invalid user ID: " + id));
+        return userRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("Invalid user ID: " + id));
     }
 
+    @Override
     public void save(User user) {
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         userRepository.save(user);
     }
 
+    @Override
     public void updateUser(User user) {
         Optional<User> optionalExistingUser = userRepository.findById(user.getId());
 
@@ -64,9 +67,11 @@ public class MyUserDetailService implements UserDetailsService {
         userRepository.save(existingUser);
     }
 
+    @Override
     public void deleteById(Long id) {
         userRepository.deleteById(id);
     }
+
     @Transactional
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
@@ -74,17 +79,10 @@ public class MyUserDetailService implements UserDetailsService {
         if (user == null) {
             throw new UsernameNotFoundException("User not found");
         }
-        return new org.springframework.security.core.userdetails.User(
-                user.getUsername(),
-                user.getPassword(),
-                mapRolesToAuthorities(user.getRoles())
-        );
+        return new org.springframework.security.core.userdetails.User(user.getUsername(), user.getPassword(), mapRolesToAuthorities(user.getRoles()));
     }
 
     private Collection<? extends GrantedAuthority> mapRolesToAuthorities(Set<Role> roles) {
-        return roles.stream()
-                .map(role -> new SimpleGrantedAuthority(role.getName()))
-                .collect(Collectors.toList());
+        return roles.stream().map(role -> new SimpleGrantedAuthority(role.getName())).collect(Collectors.toList());
     }
-
 }
