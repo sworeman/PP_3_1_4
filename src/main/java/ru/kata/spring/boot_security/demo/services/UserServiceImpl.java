@@ -45,6 +45,9 @@ public class UserServiceImpl implements UserService {
     @Override
     public void save(User user) {
         user.setPassword(passwordEncoder.encode(user.getPassword()));
+        user.setFirstname(user.getFirstname());
+        user.setLastname(user.getLastname());
+        user.setAge(user.getAge());
         userRepository.save(user);
     }
 
@@ -64,6 +67,9 @@ public class UserServiceImpl implements UserService {
         if (!user.getRoles().isEmpty()) {
             existingUser.setRoles(user.getRoles());
         }
+        existingUser.setFirstname(user.getFirstname());
+        existingUser.setLastname(user.getLastname());
+        existingUser.setAge(user.getAge());
         userRepository.save(existingUser);
     }
 

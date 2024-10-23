@@ -13,7 +13,10 @@
 <table>
     <thead>
     <tr>
-        <th>Username</th>
+        <th>Username(Email)</th>
+        <th>Firstname</th>
+        <th>Lastname</th>
+        <th>Age</th>
         <th>Roles</th>
         <th>Actions</th>
     </tr>
@@ -21,6 +24,9 @@
     <tbody>
     <tr th:each="user : ${users}">
         <td th:text="${user.username}"></td>
+        <td th:text="${user.firstname}"></td>
+        <td th:text="${user.lastname}"></td>
+        <td th:text="${user.age}"></td>
         <td th:each="role : ${user.roles}" th:text="${role.name}">Role</td>
         <td>
             <a th:href="@{/admin/edit/{id}(id=${user.id})}">Edit</a>
@@ -34,7 +40,7 @@
 
 <h2>Add New User</h2>
 <form th:action="@{/admin/add}" method="post">
-    <label for="username">Username:</label>
+    <label for="username">Username(Email):</label>
     <input type="text" id="username" th:field="*{newUser.username}" required>
 
     <label for="password">Password:</label>

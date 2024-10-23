@@ -46,6 +46,9 @@ public class DataInitializer {
         adminRoles.add(adminRole);
         adminRoles.add(userRole);
         admin.setRoles(adminRoles);
+        admin.setAge((byte) 0);
+        admin.setFirstname("null");
+        admin.setLastname("null");
         userRepository.save(admin);
 
         User user = new User();
@@ -54,6 +57,9 @@ public class DataInitializer {
         Set<Role> userRoles = new HashSet<>();
         userRoles.add(userRole);
         user.setRoles(userRoles);
+        user.setAge((byte) 0);
+        user.setFirstname("null");
+        user.setLastname("null");
         userRepository.save(user);
     }
 }
