@@ -1,5 +1,7 @@
 package ru.kata.spring.boot_security.demo.controllers;
 
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -24,10 +26,11 @@ public class AdminController {
     }
 
     @GetMapping
-    public String adminPage(Model model) {
+    public String adminPage(@AuthenticationPrincipal UserDetails userDetails, Model model) {
         model.addAttribute("users", userServiceImpl.findAll());
         model.addAttribute("allRoles", roleServiceImpl.findAll());
         model.addAttribute("newUser", new User());
+        model.addAttribute("username", userDetails.getUsername());
         return "admin";
     }
 
@@ -54,7 +57,7 @@ public class AdminController {
     }
 
     @PostMapping("/update_user")
-    public String updateUser(@ModelAttribute User user, @RequestParam Long id, Model model) {
+    public String updateUser(@ModelAttribute User user, @RequestParam Long id) {
         user.setId(id);
         userServiceImpl.updateUser(user);
         return "redirect:/admin";
