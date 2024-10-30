@@ -11,12 +11,10 @@
 <!-- Верхняя панель -->
 <nav class="navbar navbar-dark bg-dark">
     <div class="container-fluid">
-            <span class="navbar-text text-light">
-                <strong th:text="${username}"></strong> with roles: ADMIN USER
-                <span th:text="${username}"><span th:each="role : ${roles}" th:text="${role.authority}">
-
-                </span></span>
-            </span>
+        <span class="navbar-text text-light">
+            <strong th:text="${username}"></strong> with roles:
+            <span th:each="role : ${roles}" th:text="${role.authority.replace('ROLE_', '')} + ' '"></span>
+        </span>
         <a href="/logout" class="btn btn-outline-light">Logout</a>
     </div>
 </nav>
@@ -29,12 +27,12 @@
             <div class="position-sticky">
                 <ul class="nav flex-column">
                     <li class="nav-item">
-                        <a class="nav-link active" href="#admin">
+                        <a class="nav-link active" href="/admin">
                             Admin
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="#user">
+                        <a class="nav-link" href="/user">
                             User
                         </a>
                     </li>
@@ -76,7 +74,6 @@
                         </tr>
                         </thead>
                         <tbody>
-                        <!-- Пример -->
                         <tr th:each="user : ${users}">
                             <td th:text="${user.id}"></td>
                             <td th:text="${user.username}"></td>
