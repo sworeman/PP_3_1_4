@@ -1,10 +1,8 @@
 package ru.kata.spring.boot_security.demo.controllers;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 import ru.kata.spring.boot_security.demo.dto.UserDTO;
 import ru.kata.spring.boot_security.demo.models.Role;
@@ -14,7 +12,6 @@ import ru.kata.spring.boot_security.demo.services.UserConverter;
 import ru.kata.spring.boot_security.demo.services.UserService;
 
 import java.security.Principal;
-import java.util.HashSet;
 import java.util.List;
 
 @RestController
