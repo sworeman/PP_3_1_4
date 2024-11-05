@@ -25,11 +25,13 @@ public class UserServiceImpl implements UserService {
 
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
+    private final RoleService roleService;
 
     @Autowired
-    public UserServiceImpl(UserRepository userRepository, @Lazy PasswordEncoder passwordEncoder) {
+    public UserServiceImpl(UserRepository userRepository, @Lazy PasswordEncoder passwordEncoder, RoleService roleService) {
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
+        this.roleService = roleService;
     }
 
     @Override
@@ -55,18 +57,24 @@ public class UserServiceImpl implements UserService {
     public void updateUser(User user) {
         Optional<User> optionalExistingUser = userRepository.findById(user.getId());
 
-        User existingUser = optionalExistingUser.get();
-        existingUser.setUsername(user.getUsername());
-
         if (!optionalExistingUser.isPresent()) {
             throw new EntityNotFoundException("User not found");
         }
-        if (!user.getPassword().isEmpty()) {
+        User existingUser = optionalExistingUser.get();
+        existingUser.setUsername(user.getUsername());
+
+        if (user.getPassword() != null && !user.getPassword().isEmpty()) {
             existingUser.setPassword(passwordEncoder.encode(user.getPassword()));
         }
-        if (!user.getRoles().isEmpty()) {
-            existingUser.setRoles(user.getRoles());
+
+        if (user.getRoles() != null && !user.getRoles().isEmpty()) {
+            List<Long> roleIds = user.getRoles().stream()
+                    .map(Role::getId)
+                    .collect(Collectors.toList());
+            Set<Role> roles = roleService.findByIds(roleIds);
+            existingUser.setRoles(roles);
         }
+
         existingUser.setFirstname(user.getFirstname());
         existingUser.setLastname(user.getLastname());
         existingUser.setAge(user.getAge());

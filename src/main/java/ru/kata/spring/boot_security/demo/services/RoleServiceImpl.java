@@ -25,4 +25,12 @@ public class RoleServiceImpl implements RoleService {
     public Set<Role> findByIds(List<Long> ids) {
         return new HashSet<>(roleRepository.findAllById(ids));
     }
+
+
+
+//    @Override
+//    public Role findByName(String roleName) {
+//        return roleRepository.findByName(roleName)
+//                .orElseThrow(() -> new RuntimeException("Role not found: " + roleName));
+//    }
 }

@@ -26,6 +26,11 @@ public class AdminController {
     }
 
     @GetMapping
+    public String adminPage(Model model) {
+        return "admin";
+    }
+/*
+    @GetMapping
     public String adminPage(@AuthenticationPrincipal UserDetails userDetails, Model model) {
         String username = userDetails.getUsername();
         User user = (User) userService.loadUserByUsername(username);
@@ -69,5 +74,5 @@ public class AdminController {
         user.setId(id);
         userService.updateUser(user);
         return "redirect:/admin";
-    }
+    }*/
 }

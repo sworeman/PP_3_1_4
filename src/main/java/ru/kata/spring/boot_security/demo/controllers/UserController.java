@@ -12,13 +12,16 @@ import ru.kata.spring.boot_security.demo.services.UserService;
 @Controller
 public class UserController {
     private final UserService userService;
-    private final RoleService roleService;
 
-    public UserController(UserService userService, RoleService roleService) {
+    public UserController(UserService userService) {
         this.userService = userService;
-        this.roleService = roleService;
     }
 
+    @GetMapping
+    public String userPage(Model model) {
+        return "user";
+    }
+/*
     @GetMapping("/user")
     public String userPage(@AuthenticationPrincipal UserDetails userDetails, Model model) {
         String username = userDetails.getUsername();
@@ -30,5 +33,5 @@ public class UserController {
                 .anyMatch(role -> role.getAuthority().equals("ROLE_ADMIN"));
         model.addAttribute("isAdmin", isAdmin);
         return "user";
-    }
+    }*/
 }
