@@ -1,6 +1,5 @@
 package ru.kata.spring.boot_security.demo.models;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -72,18 +71,23 @@ public class User implements UserDetails {
     public String getFirstname() {
         return firstname;
     }
+
     public void setFirstname(String firstname) {
         this.firstname = firstname;
     }
+
     public String getLastname() {
         return lastname;
     }
+
     public void setLastname(String lastname) {
         this.lastname = lastname;
     }
+
     public byte getAge() {
         return age;
     }
+
     public void setAge(byte age) {
         this.age = age;
     }

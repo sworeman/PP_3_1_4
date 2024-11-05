@@ -2,8 +2,8 @@ package ru.kata.spring.boot_security.demo.services;
 
 import org.springframework.stereotype.Component;
 import ru.kata.spring.boot_security.demo.dto.UserDTO;
-import ru.kata.spring.boot_security.demo.models.User;
 import ru.kata.spring.boot_security.demo.models.Role;
+import ru.kata.spring.boot_security.demo.models.User;
 
 import java.util.ArrayList;
 import java.util.List;
